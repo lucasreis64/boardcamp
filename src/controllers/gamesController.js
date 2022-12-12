@@ -54,7 +54,7 @@ export async function create(req, res) {
             "SELECT * FROM games WHERE name = $1;",
             [name]
         );
-        console.log(isExistentName.rows);
+
         if (isExistentName.rows.length > 0) {
             res.sendStatus(409);
             return;
