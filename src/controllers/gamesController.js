@@ -5,9 +5,10 @@ export async function findAll(req, res) {
     try {
         if (name) {
             const { rows } = await connection.query(
-                "SELECT * FROM games WHERE name LIKE $1;",
-                [`%${name}%`]
+                "SELECT * FROM games WHERE LOWER(name) LIKE LOWER($1);",
+                [`${name}%`]
             );
+            if ((rows.length === 0)) return res.sendStatus(404);
 
             rows.forEach(async (r, i) => {
                 const categoryName = await connection.query(
@@ -15,9 +16,10 @@ export async function findAll(req, res) {
                     [r.categoryId]
                 );
                 r.categoryName = categoryName.rows[0].name;
-                if (i === rows.length - 1) res.send(rows);
+
+                if (i === rows.length - 1)  return res.send(rows);   
             });
-            return;
+            return
         }
 
         const { rows } = await connection.query("SELECT * FROM games;");
