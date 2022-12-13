@@ -42,26 +42,6 @@ export async function create(req, res) {
     const { name, image, stockTotal, categoryId, pricePerDay } = req.body;
 
     try {
-        const isExistentId = await connection.query(
-            'SELECT * FROM categories WHERE "id" = $1;',
-            [categoryId]
-        );
-
-        if (isExistentId.rows.length === 0) {
-            res.sendStatus(400);
-            return;
-        }
-
-        const isExistentName = await connection.query(
-            "SELECT * FROM games WHERE name = $1;",
-            [name]
-        );
-
-        if (isExistentName.rows.length > 0) {
-            res.sendStatus(409);
-            return;
-        }
-
         await connection.query(
             'INSERT INTO games (name, image, "stockTotal", "categoryId", "pricePerDay") VALUES ($1, $2, $3, $4, $5)',
             [name, image, stockTotal, categoryId, pricePerDay]

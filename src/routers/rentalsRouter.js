@@ -1,11 +1,11 @@
-import { create } from "../controllers/rentalsController.js";
+import { checkOut, create, deleteOne, findAll } from "../controllers/rentalsController.js";
 import express from 'express';
 
 const router = express.Router();
 
 router.post("/rentals", create);
-/* router.get("/customers", findAll);
-router.get("/customers/:id", findById)
-router.put("/customers/:id", update) */
+router.get("/rentals", findAll);
+router.delete("/rentals/:id", deleteOne)
+router.post("/rentals/:id/return", checkOut)
 
 export default router;

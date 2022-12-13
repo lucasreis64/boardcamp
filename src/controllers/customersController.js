@@ -47,16 +47,6 @@ export async function create(req, res) {
     const { name, phone, cpf, birthday } = req.body;
 
     try {
-        const isExistentCpf = await connection.query(
-            "SELECT * FROM customers WHERE cpf = $1;",
-            [cpf]
-        );
-
-        if (isExistentCpf.rows.length > 0) {
-            res.sendStatus(409);
-            return;
-        }
-
         await connection.query(
             "INSERT INTO customers (name, phone, cpf, birthday) VALUES ($1, $2, $3, $4)",
             [name, phone, cpf, birthday]
@@ -73,21 +63,6 @@ export async function update(req, res) {
     const { name, phone, cpf, birthday } = req.body;
 
     try {
-        let isExistentCpf = await connection.query(
-            "SELECT * FROM customers WHERE cpf = $1;",
-            [cpf]
-        );
-        isExistentCpf = isExistentCpf.rows;
-        const thisCpf = isExistentCpf.find((i) => i.id === Number(id));
-        console.log(thisCpf);
-        if (
-            isExistentCpf[0]?.cpf !== thisCpf?.cpf &&
-            isExistentCpf[0]?.cpf > 0
-        ) {
-            res.sendStatus(409);
-            return;
-        }
-
         await connection.query(
             "UPDATE customers SET name=$1, phone=$2, cpf=$3, birthday=$4 WHERE id=$5",
             [name, phone, cpf, birthday, id]
