@@ -6,7 +6,7 @@ export async function validateRentals(req, res, next) {
     const { customerId, gameId, daysRented } = req.body;
     let avaiable = false;
 
-    if (!validateBySchema(req.body, res, rentalsUpdateSchema)) return;
+    if (!validateBySchema(req.body, res, rentalsSchema)) return;
 
     try {
         const isExistentCustomerId = await connection.query(
